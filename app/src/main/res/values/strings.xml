@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">CatHomework</string>
+    <string name="get_new_cat">Получить кошек!</string>
 </resources>
