@@ -17,30 +17,30 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _catLiveData = MutableLiveData<List<CatData>>()
-    val catLiveData: LiveData<List<CatData>> get() = _catLiveData
+    val catLiveData: LiveData<List<CatData>> = _catLiveData
 
     private val _breedLiveData = MutableLiveData<List<BreedData>>()
-    val breedLiveData: LiveData<List<BreedData>> get() = _breedLiveData
+    val breedLiveData: LiveData<List<BreedData>> = _breedLiveData
 
-    private val breedMap: MutableMap<String?, String?> = mutableMapOf()
+    private val breedMap = mutableMapOf<String, String>()
 
     fun getCatImage(breed: String) {
-        val idCat = getIdBread(breed)
         viewModelScope.launch {
-            _catLiveData.value = repository.getCatImageUrl(idCat)
+            val idCat = getIdBread(breed)
+            val catImageUrl = repository.getCatImageUrl(idCat)
+            _catLiveData.value = catImageUrl
         }
     }
 
     fun getBreeds() {
         viewModelScope.launch {
-            _breedLiveData.value = repository.getBreeds()
-            for (i in _breedLiveData.value!!) {
-                breedMap[i.breed] = i.idBreed
-            }
+            val breeds = repository.getBreeds()
+            _breedLiveData.value = breeds
+            breedMap.putAll(breeds.associateBy { it.breed }.mapValues { it.value.idBreed })
         }
     }
 
-    private fun getIdBread(breeds: String): String {
-        return breedMap[breeds].toString()
+    private fun getIdBread(breed: String): String {
+        return breedMap[breed].orEmpty()
     }
 }
