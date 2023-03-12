@@ -6,17 +6,15 @@ import com.example.cathomework.data.network.CatRemoteData
 import com.example.cathomework.data.network.CatService
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
-@InstallIn(SingletonComponent::class)
-object CatsModule {
+class CatsModule {
 
     @Provides
+    @Singleton
     fun providesBaseUrl(): String = "https://api.thecatapi.com/v1/"
 
     @Provides
